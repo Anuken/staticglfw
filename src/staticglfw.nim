@@ -18,6 +18,7 @@ else:
       compile: "staticglfw/win32_time.c",
       compile: "staticglfw/win32_thread.c",
       compile: "staticglfw/win32_window.c",
+      compile: "staticglfw/win32_module.c",
       compile: "staticglfw/wgl_context.c",
       compile: "staticglfw/egl_context.c",
       compile: "staticglfw/osmesa_context.c"
@@ -46,6 +47,8 @@ else:
         compile: "staticglfw/wl_monitor.c",
         compile: "staticglfw/wl_window.c",
         compile: "staticglfw/posix_time.c",
+        compile: "staticglfw/posix_poll.c",
+        compile: "staticglfw/posix_module.c",
         compile: "staticglfw/posix_thread.c",
         compile: "staticglfw/xkb_unicode.c",
         compile: "staticglfw/egl_context.c",
@@ -59,6 +62,8 @@ else:
         compile: "staticglfw/x11_window.c",
         compile: "staticglfw/xkb_unicode.c",
         compile: "staticglfw/posix_time.c",
+        compile: "staticglfw/posix_poll.c",
+        compile: "staticglfw/posix_module.c",
         compile: "staticglfw/posix_thread.c",
         compile: "staticglfw/glx_context.c",
         compile: "staticglfw/egl_context.c",
@@ -81,6 +86,7 @@ else:
   # Common
   {.
     compile: "staticglfw/context.c",
+    compile: "staticglfw/platform.c",
     compile: "staticglfw/init.c",
     compile: "staticglfw/input.c",
     compile: "staticglfw/monitor.c",
@@ -91,7 +97,7 @@ else:
 const
   VERSION_MAJOR* = 3
   VERSION_MINOR* = 3
-  VERSION_REVISION* = 2
+  VERSION_REVISION* = 6
 
   TRUE* = 1
   FALSE* = 0
@@ -281,6 +287,7 @@ const
   FLOATING* = 0x00020007
   MAXIMIZED* = 0x00020008
   FOCUS_ON_SHOW* = 0x0002000C
+  TRANSPARENT_FRAMEBUFFER* = 0x0002000A
 
   RED_BITS* = 0x00021001
   GREEN_BITS* = 0x00021002
@@ -422,7 +429,7 @@ proc setErrorCallback*(cbfun: ErrorFun): ErrorFun {.cdecl, importc: "glfwSetErro
 # Joystick functions
 proc joystickPresent*(joy: cint): cint {.cdecl, importc: "glfwJoystickPresent".}
 proc getJoystickAxes*(joy: cint, count: ptr cint): ptr cfloat {.cdecl, importc: "glfwGetJoystickAxes".}
-proc getJoystickButtons*(joy: cint, count: ptr cint): ptr cuchar {.cdecl, importc: "glfwGetJoystickButtons".}
+proc getJoystickButtons*(joy: cint, count: ptr cint): ptr char {.cdecl, importc: "glfwGetJoystickButtons".}
 proc getJoystickName*(joy: cint): cstring {.cdecl, importc: "glfwGetJoystickName".}
 proc setJoystickCallback*(cbfun: JoystickFun): JoystickFun {.cdecl, importc: "glfwSetJoystickCallback".}
 # monitor functions
@@ -531,9 +538,3 @@ when defined(windows):
   proc getWin32Window*(window: Window): cint {.cdecl, importc: "glfwGetWin32Window".}
 when defined(macosx):
   proc getCocoaWindow*(window: Window): clong {.cdecl, importc: "glfwGetCocoaWindow".}
-
-
-# My Extra functions:
-proc setImePos*(window: Window, xpos: cint, ypos: cint) {.cdecl, importc: "glfwSetImePos".}
-proc getIme*(window: Window, location: ptr[cint], string: cstring) {.cdecl, importc: "glfwGetIme".}
-proc closeIme*(window: Window) {.cdecl, importc: "glfwCloseIme".}

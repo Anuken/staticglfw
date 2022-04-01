@@ -65,17 +65,21 @@ void _glfwPollMonitorsNull(void)
 //////                       GLFW platform API                      //////
 //////////////////////////////////////////////////////////////////////////
 
-void _glfwPlatformFreeMonitor(_GLFWmonitor* monitor)
+void _glfwFreeMonitorNull(_GLFWmonitor* monitor)
 {
     _glfwFreeGammaArrays(&monitor->null.ramp);
 }
 
-void _glfwPlatformGetMonitorPos(_GLFWmonitor* monitor, int* xpos, int* ypos)
+void _glfwGetMonitorPosNull(_GLFWmonitor* monitor, int* xpos, int* ypos)
 {
+    if (xpos)
+        *xpos = 0;
+    if (ypos)
+        *ypos = 0;
 }
 
-void _glfwPlatformGetMonitorContentScale(_GLFWmonitor* monitor,
-                                         float* xscale, float* yscale)
+void _glfwGetMonitorContentScaleNull(_GLFWmonitor* monitor,
+                                     float* xscale, float* yscale)
 {
     if (xscale)
         *xscale = 1.f;
@@ -83,42 +87,44 @@ void _glfwPlatformGetMonitorContentScale(_GLFWmonitor* monitor,
         *yscale = 1.f;
 }
 
-void _glfwPlatformGetMonitorWorkarea(_GLFWmonitor* monitor,
-                                     int* xpos, int* ypos,
-                                     int* width, int* height)
+void _glfwGetMonitorWorkareaNull(_GLFWmonitor* monitor,
+                                 int* xpos, int* ypos,
+                                 int* width, int* height)
 {
     const GLFWvidmode mode = getVideoMode();
 
     if (xpos)
-        *xpos = 10;
+        *xpos = 0;
     if (ypos)
-        ypos = 0;
+        *ypos = 10;
     if (width)
         *width = mode.width;
     if (height)
         *height = mode.height - 10;
 }
 
-GLFWvidmode* _glfwPlatformGetVideoModes(_GLFWmonitor* monitor, int* found)
+GLFWvidmode* _glfwGetVideoModesNull(_GLFWmonitor* monitor, int* found)
 {
-    GLFWvidmode* mode = calloc(1, sizeof(GLFWvidmode));
+    GLFWvidmode* mode = _glfw_calloc(1, sizeof(GLFWvidmode));
     *mode = getVideoMode();
     *found = 1;
     return mode;
 }
 
-void _glfwPlatformGetVideoMode(_GLFWmonitor* monitor, GLFWvidmode* mode)
+void _glfwGetVideoModeNull(_GLFWmonitor* monitor, GLFWvidmode* mode)
 {
     *mode = getVideoMode();
 }
 
-GLFWbool _glfwPlatformGetGammaRamp(_GLFWmonitor* monitor, GLFWgammaramp* ramp)
+GLFWbool _glfwGetGammaRampNull(_GLFWmonitor* monitor, GLFWgammaramp* ramp)
 {
     if (!monitor->null.ramp.size)
     {
+        unsigned int i;
+
         _glfwAllocGammaArrays(&monitor->null.ramp, 256);
 
-        for (unsigned int i = 0;  i < monitor->null.ramp.size;  i++)
+        for (i = 0;  i < monitor->null.ramp.size;  i++)
         {
             const float gamma = 2.2f;
             float value;
@@ -139,7 +145,7 @@ GLFWbool _glfwPlatformGetGammaRamp(_GLFWmonitor* monitor, GLFWgammaramp* ramp)
     return GLFW_TRUE;
 }
 
-void _glfwPlatformSetGammaRamp(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
+void _glfwSetGammaRampNull(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
 {
     if (monitor->null.ramp.size != ramp->size)
     {
