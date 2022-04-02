@@ -33,6 +33,7 @@ else:
       compile: "staticglfw/cocoa_window.m",
       compile: "staticglfw/cocoa_time.c",
       compile: "staticglfw/posix_thread.c",
+      compile: "staticglfw/posix_module.c",
       compile: "staticglfw/nsgl_context.m",
       compile: "staticglfw/egl_context.c",
       compile: "staticglfw/osmesa_context.c"
