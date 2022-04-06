@@ -43,6 +43,6 @@ terminate()
 
 ## GLFW version:
 
-Version: 3.3.6
+Version: 3.4.0
 
 Currently tracking this commit: https://github.com/glfw/glfw/commit/955fbd9d265fa95adf9cb94896eb9a516aa50420
