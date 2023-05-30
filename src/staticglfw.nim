@@ -489,7 +489,7 @@ proc setWindowCloseCallback*(window: Window, cbfun: WindowCloseFun): WindowClose
 proc setWindowFocusCallback*(window: Window, cbfun: WindowFocusFun): WindowFocusFun {.cdecl, importc: "glfwSetWindowFocusCallback".}
 proc setWindowIcon*(window: Window, count: cint, image: ptr GlfwImage) {.cdecl, importc: "glfwSetWindowIcon".}
 proc setWindowIconifyCallback*(window: Window, cbfun: WindowIconifyFun): WindowIconifyFun {.cdecl, importc: "glfwSetWindowIconifyCallback".}
-proc setWindowMonitor*(window: Window, monitor: Monitor, xpos, ypos, width, height: cint) {.cdecl, importc: "glfwSetWindowMonitor".}
+proc setWindowMonitor*(window: Window, monitor: Monitor, xpos, ypos, width, height, refreshRate: cint) {.cdecl, importc: "glfwSetWindowMonitor".}
 proc setWindowPos*(window: Window, xpos: cint, ypos: cint) {.cdecl, importc: "glfwSetWindowPos".}
 proc setWindowPosCallback*(window: Window, cbfun: WindowPosFun): WindowPosFun {.cdecl, importc: "glfwSetWindowPosCallback".}
 proc setWindowRefreshCallback*(window: Window, cbfun: Windowrefreshfun): Windowrefreshfun {.cdecl, importc: "glfwSetWindowRefreshCallback".}
