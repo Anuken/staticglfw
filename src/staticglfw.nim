@@ -383,7 +383,7 @@ type
   CharModsFun* = proc (window: Window, codepoint: cuint, mods: cint) {.cdecl.}
   DropFun* = proc (window: Window, count: cint, paths: cstringArray) {.cdecl.}
   MonitorFun* = proc (monitor: Monitor, connected: cint) {.cdecl.}
-  JoystickFun* = proc (joy : cint, event: cint)
+  JoystickFun* = proc (joy: cint, event: cint) {.cdecl.}
 
   VidMode* {.pure, final.} = object
     width*: cint
