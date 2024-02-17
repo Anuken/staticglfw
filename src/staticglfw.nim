@@ -529,6 +529,7 @@ proc setWindowShouldClose*(window: Window, value: cint) {.cdecl, importc: "glfwS
 proc setWindowSize*(window: Window, width: cint, height: cint) {.cdecl, importc: "glfwSetWindowSize".}
 proc setWindowSizeCallback*(window: Window, cbfun: WindowSizeFun): WindowSizeFun {.cdecl, importc: "glfwSetWindowSizeCallback".}
 proc setWindowSizeLimits*(window: Window, minwidth, minheight, maxwidth, maxheight: cint) {.cdecl, importc: "glfwSetWindowSizeLimits".}
+proc setWindowAttrib*(window: Window, attrib: cint, value: cint) {.cdecl, importc: "glfwSetWindowAttrib".}
 proc setWindowTitle*(window: Window, title: cstring) {.cdecl, importc: "glfwSetWindowTitle".}
 proc setWindowUserPointer*(window: Window, pointer: pointer) {.cdecl, importc: "glfwSetWindowUserPointer".}
 proc showWindow*(window: Window) {.cdecl, importc: "glfwShowWindow".}
