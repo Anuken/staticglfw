@@ -75,10 +75,6 @@ else:
   else:
     # If unsupported/unknown OS, use null system
     {.
-      compile: "staticglfw/null_init.c",
-      compile: "staticglfw/null_monitor.c",
-      compile: "staticglfw/null_window.c",
-      compile: "staticglfw/null_joystick.c",
       compile: "staticglfw/posix_time.c",
       compile: "staticglfw/posix_thread.c",
       compile: "staticglfw/osmesa_context.c"
@@ -86,6 +82,10 @@ else:
 
   # Common
   {.
+    compile: "staticglfw/null_init.c",
+    compile: "staticglfw/null_monitor.c",
+    compile: "staticglfw/null_window.c",
+    compile: "staticglfw/null_joystick.c",
     compile: "staticglfw/context.c",
     compile: "staticglfw/platform.c",
     compile: "staticglfw/init.c",
@@ -312,7 +312,7 @@ const
   MAXIMIZED* = 0x00020008
   FOCUS_ON_SHOW* = 0x0002000C
   TRANSPARENT_FRAMEBUFFER* = 0x0002000A
-  GLFW_MOUSE_PASSTHROUGH* = 0x0002000D
+  MOUSE_PASSTHROUGH* = 0x0002000D
 
   RED_BITS* = 0x00021001
   GREEN_BITS* = 0x00021002
@@ -430,7 +430,7 @@ type
     width*: cint
     height*: cint
     pixels*: cstring
-  
+
   GamepadState* {.pure, final.} = object
     buttons*: array[15, uint8] #PRESS or RELEASE
     axes*: array[6, cfloat]

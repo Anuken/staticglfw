@@ -24,10 +24,10 @@
 //    distribution.
 //
 //========================================================================
-// It is fine to use C99 in this file because it will not be built with VS
-//========================================================================
 
 #include "internal.h"
+
+#if defined(_GLFW_X11)
 
 #include <string.h>
 #include <stdlib.h>
@@ -190,6 +190,7 @@ static void swapBuffersGLX(_GLFWwindow* window)
 static void swapIntervalGLX(int interval)
 {
     _GLFWwindow* window = _glfwPlatformGetTls(&_glfw.contextSlot);
+    assert(window != NULL);
 
     if (_glfw.glx.EXT_swap_control)
     {
@@ -226,7 +227,10 @@ static GLFWglproc getProcAddressGLX(const char* procname)
     else if (_glfw.glx.GetProcAddressARB)
         return _glfw.glx.GetProcAddressARB((const GLubyte*) procname);
     else
+    {
+        // NOTE: glvnd provides GLX 1.4, so this can only happen with libGL
         return _glfwPlatformGetModuleSymbol(_glfw.glx.handle, procname);
+    }
 }
 
 static void destroyContextGLX(_GLFWwindow* window)
@@ -262,6 +266,7 @@ GLFWbool _glfwInitGLX(void)
 #elif defined(__OpenBSD__) || defined(__NetBSD__)
         "libGL.so",
 #else
+        "libGLX.so.0",
         "libGL.so.1",
         "libGL.so",
 #endif
@@ -709,4 +714,6 @@ GLFWAPI GLXWindow glfwGetGLXWindow(GLFWwindow* handle)
 
     return window->context.glx.window;
 }
+
+#endif // _GLFW_X11
 
