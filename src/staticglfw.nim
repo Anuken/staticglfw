@@ -540,6 +540,8 @@ proc showWindow*(window: Window) {.cdecl, importc: "glfwShowWindow".}
 proc swapBuffers*(window: Window) {.cdecl, importc: "glfwSwapBuffers".}
 proc windowShouldClose*(window: Window): cint {.cdecl, importc: "glfwWindowShouldClose".}
 proc windowHint*(target: cint, hint: cint) {.cdecl, importc: "glfwWindowHint".}
+proc getKeyName*(key: cint, scancode: cint): cstring {.cdecl, importc: "glfwGetKeyName".}
+proc getKeyScancode*(key: cint): int {.cdecl, importc: "glfwGetKeyName".}
 
 # Vulkan types & functions
 type
