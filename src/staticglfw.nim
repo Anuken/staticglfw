@@ -370,6 +370,11 @@ const
   NATIVE_CONTEXT_API* = 0x00036001
   EGL_CONTEXT_API* = 0x00036002
 
+  X11_CLASS_NAME* = 0x00024001
+  X11_INSTANCE_NAME* = 0x00024002
+  WAYLAND_APP_ID* = 0x00026001
+  COCOA_FRAME_NAME* = 0x00023002
+
   ARROW_CURSOR* = 0x00036001
   IBEAM_CURSOR* = 0x00036002
   CROSSHAIR_CURSOR* = 0x00036003
@@ -540,6 +545,7 @@ proc showWindow*(window: Window) {.cdecl, importc: "glfwShowWindow".}
 proc swapBuffers*(window: Window) {.cdecl, importc: "glfwSwapBuffers".}
 proc windowShouldClose*(window: Window): cint {.cdecl, importc: "glfwWindowShouldClose".}
 proc windowHint*(target: cint, hint: cint) {.cdecl, importc: "glfwWindowHint".}
+proc windowHintString*(target: cint, hint: cstring) {.cdecl, importc: "glfwWindowHintString".}
 proc getKeyName*(key: cint, scancode: cint): cstring {.cdecl, importc: "glfwGetKeyName".}
 proc getKeyScancode*(key: cint): int {.cdecl, importc: "glfwGetKeyName".}
 
