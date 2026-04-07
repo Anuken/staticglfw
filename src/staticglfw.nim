@@ -26,12 +26,12 @@ else:
   elif defined(macosx):
     {.
       passC: "-D_GLFW_COCOA",
-      passL: "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo",
+      passL: "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo -framework QuartzCore",
       compile: "staticglfw/cocoa_init.m",
       compile: "staticglfw/cocoa_joystick.m",
       compile: "staticglfw/cocoa_monitor.m",
       compile: "staticglfw/cocoa_window.m",
-      compile: "staticglfw/cocoa_time.c",
+      compile: "staticglfw/macos_time.c",
       compile: "staticglfw/posix_thread.c",
       compile: "staticglfw/posix_module.c",
       compile: "staticglfw/nsgl_context.m",
@@ -51,7 +51,6 @@ else:
         compile: "staticglfw/posix_poll.c",
         compile: "staticglfw/posix_module.c",
         compile: "staticglfw/posix_thread.c",
-        compile: "staticglfw/xkb_unicode.c",
         compile: "staticglfw/egl_context.c",
         compile: "staticglfw/osmesa_context.c"
       .}
