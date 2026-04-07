@@ -484,40 +484,39 @@ void _glfwUpdateGamepadGUIDCocoa(char* guid)
 // WARNING: This is Gemini AI slop code. 
 // As sad as it is, I don't care enough to implement rumble for MacOS myself, and this may not work for others.
 // Better than nothing, I suppose? Unless it crashes. Then I'm in trouble.
-int _glfwPlatformSetJoystickRumble(_GLFWjoystick* js, float slowMotorIntensity, float fastMotorIntensity) {
+int _glfwPlatformSetJoystickRumble(_GLFWjoystick* js, float slowMotorIntensity, float fastMotorIntensity) 
+{
     if (!js->ns.device) return GLFW_FALSE;
 
-    // The Xbox 360 rumble packet is typically an 8-byte output report.
-    // Note: The first byte is often the Report ID (0x00 for many drivers/devices).
-    uint8_t report[8];
-    report[0] = 0x00; // Report ID
-    report[1] = 0x08; // Total length of the packet
-    report[2] = 0x00; // Subcommand/Padding
-    
-    // Motor values are typically 0-255
-    report[3] = (uint8_t)(slowMotorIntensity * 255.0f); // Low-frequency (Large)
-    report[4] = (uint8_t)(fastMotorIntensity * 255.0f); // High-frequency (Small)
-    
-    report[5] = 0x00; // Reserved
-    report[6] = 0x00; // Reserved
-    report[7] = 0x00; // Reserved
+    // Get Vendor ID
+    CFNumberRef vidRef = IOHIDDeviceGetProperty(js->ns.device, CFSTR(kIOHIDVendorIDKey));
+    int vid = 0;
+    if (vidRef) CFNumberGetValue(vidRef, kCFNumberIntType, &vid);
 
-    // Send the report directly to the device
-    IOReturn result = IOHIDDeviceSetReport(
-        js->ns.device,
-        kIOHIDReportTypeOutput,
-        report[0], // Report ID
-        report,
-        sizeof(report)
-    );
-
-    if (result != kIOReturnSuccess) {
-        // Fallback or debug: Some drivers expect a 4-byte packet instead of 8
-        // or a different Report ID depending on the specific USB descriptor.
-        return GLFW_FALSE;
+    if (vid == VID_MICROSOFT) {
+        // Xbox 360 / Xbox One (Wired) Manual Report
+        uint8_t report[8] = {0x00, 0x08, 0x00, 
+                             (uint8_t)(slowMotorIntensity * 255), 
+                             (uint8_t)(fastMotorIntensity * 255), 
+                             0x00, 0x00, 0x00};
+        
+        IOHIDDeviceSetReport(js->ns.device, kIOHIDReportTypeOutput, 0x00, report, sizeof(report));
+        return 1;
+    } else if (vid == VID_SONY) {
+        // DualShock 4 / DualSense
+        // Note: DS4/DS5 often require a complex '0x11' or '0x05' report.
+        // For USB (Basic Mode), report 0x05 is common:
+        uint8_t report[32] = {0};
+        report[0] = 0x05; // Report ID
+        report[1] = 0xFF; // Enable masks (Rumble + LED)
+        report[4] = (uint8_t)(fastMotorIntensity * 255); // Right (high-freq)
+        report[5] = (uint8_t)(slowMotorIntensity * 255); // Left (low-freq)
+        
+        IOHIDDeviceSetReport(js->ns.device, kIOHIDReportTypeOutput, 0x05, report, sizeof(report));
+        return 1;
     }
 
-    return GLFW_TRUE;
+    return 0; 
 }
 
 #endif // _GLFW_COCOA
