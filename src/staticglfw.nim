@@ -468,6 +468,7 @@ proc joystickPresent*(joy: cint): cint {.cdecl, importc: "glfwJoystickPresent".}
 proc getJoystickAxes*(joy: cint, count: ptr cint): ptr cfloat {.cdecl, importc: "glfwGetJoystickAxes".}
 proc getJoystickButtons*(joy: cint, count: ptr cint): ptr char {.cdecl, importc: "glfwGetJoystickButtons".}
 proc getJoystickName*(joy: cint): cstring {.cdecl, importc: "glfwGetJoystickName".}
+proc getJoystickGuid*(joy: cint): cstring {.cdecl, importc: "glfwGetJoystickGUID".}
 proc setJoystickCallback*(cbfun: JoystickFun): JoystickFun {.cdecl, importc: "glfwSetJoystickCallback".}
 proc setJoystickRumble*(joy: cint, slowMotorIntensity, fastMotorIntensity: cfloat): cint {.cdecl, importc: "glfwSetJoystickRumble".}
 # Gamepad functions
