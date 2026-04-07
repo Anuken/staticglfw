@@ -27,6 +27,7 @@
 #include <IOKit/IOKitLib.h>
 #include <IOKit/IOCFPlugIn.h>
 #include <IOKit/hid/IOHIDKeys.h>
+#include <mach/mach_time.h>
 
 #define GLFW_COCOA_JOYSTICK_STATE         _GLFWjoystickNS ns;
 #define GLFW_COCOA_LIBRARY_JOYSTICK_STATE

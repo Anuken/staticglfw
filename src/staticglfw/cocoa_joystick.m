@@ -481,9 +481,43 @@ void _glfwUpdateGamepadGUIDCocoa(char* guid)
     }
 }
 
-int _glfwPlatformSetJoystickRumble(_GLFWjoystick* js, float slowMotorIntensity, float fastMotorIntensity)
-{
-    return GLFW_FALSE;
+// WARNING: This is Gemini AI slop code. 
+// As sad as it is, I don't care enough to implement rumble for MacOS myself, and this may not work for others.
+// Better than nothing, I suppose? Unless it crashes. Then I'm in trouble.
+int _glfwPlatformSetJoystickRumble(_GLFWjoystick* js, float slowMotorIntensity, float fastMotorIntensity) {
+    if (!js->ns.device) return GLFW_FALSE;
+
+    // The Xbox 360 rumble packet is typically an 8-byte output report.
+    // Note: The first byte is often the Report ID (0x00 for many drivers/devices).
+    uint8_t report[8];
+    report[0] = 0x00; // Report ID
+    report[1] = 0x08; // Total length of the packet
+    report[2] = 0x00; // Subcommand/Padding
+    
+    // Motor values are typically 0-255
+    report[3] = (uint8_t)(slowMotorIntensity * 255.0f); // Low-frequency (Large)
+    report[4] = (uint8_t)(fastMotorIntensity * 255.0f); // High-frequency (Small)
+    
+    report[5] = 0x00; // Reserved
+    report[6] = 0x00; // Reserved
+    report[7] = 0x00; // Reserved
+
+    // Send the report directly to the device
+    IOReturn result = IOHIDDeviceSetReport(
+        js->ns.device,
+        kIOHIDReportTypeOutput,
+        report[0], // Report ID
+        report,
+        sizeof(report)
+    );
+
+    if (result != kIOReturnSuccess) {
+        // Fallback or debug: Some drivers expect a 4-byte packet instead of 8
+        // or a different Report ID depending on the specific USB descriptor.
+        return GLFW_FALSE;
+    }
+
+    return GLFW_TRUE;
 }
 
 #endif // _GLFW_COCOA
