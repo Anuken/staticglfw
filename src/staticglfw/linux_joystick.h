@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.4 Linux - www.glfw.org
+// GLFW 3.5 Linux - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2014 Jonas Ådahl <jadahl@gmail.com>
 //
@@ -41,6 +41,7 @@ typedef struct _GLFWjoystickLinux
     int                     absMap[ABS_CNT];
     struct input_absinfo    absInfo[ABS_CNT];
     int                     hats[4][2];
+    struct ff_effect        *rumble;
 } _GLFWjoystickLinux;
 
 // Linux-specific joystick API data

@@ -1,7 +1,7 @@
 //========================================================================
-// GLFW 3.5 Win32 - www.glfw.org
+// GLFW 3.5 macOS - www.glfw.org
 //------------------------------------------------------------------------
-// Copyright (c) 2006-2017 Camilla Löwy <elmindreda@glfw.org>
+// Copyright (c) 2009-2016 Camilla Löwy <elmindreda@glfw.org>
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -24,28 +24,34 @@
 //
 //========================================================================
 
-#define GLFW_WIN32_JOYSTICK_STATE         _GLFWjoystickWin32 win32;
-#define GLFW_WIN32_LIBRARY_JOYSTICK_STATE
+#include "internal.h"
 
-// Joystick element (axis, button or slider)
-//
-typedef struct _GLFWjoyobjectWin32
+#if defined(GLFW_BUILD_MACOS_TIMER)
+
+#include <mach/mach_time.h>
+
+
+//////////////////////////////////////////////////////////////////////////
+//////                       GLFW platform API                      //////
+//////////////////////////////////////////////////////////////////////////
+
+void _glfwPlatformInitTimer(void)
 {
-    int                     offset;
-    int                     type;
-} _GLFWjoyobjectWin32;
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
 
-// Win32-specific per-joystick data
-//
-typedef struct _GLFWjoystickWin32
+    _glfw.timer.macos.frequency = (info.denom * 1e9) / info.numer;
+}
+
+uint64_t _glfwPlatformGetTimerValue(void)
 {
-    _GLFWjoyobjectWin32*    objects;
-    int                     objectCount;
-    IDirectInputDevice8W*   device;
-    DWORD                   index;
-    GUID                    guid;
-} _GLFWjoystickWin32;
+    return mach_absolute_time();
+}
 
-void _glfwDetectJoystickConnectionWin32(void);
-void _glfwDetectJoystickDisconnectionWin32(void);
+uint64_t _glfwPlatformGetTimerFrequency(void)
+{
+    return _glfw.timer.macos.frequency;
+}
+
+#endif // GLFW_BUILD_MACOS_TIMER
 

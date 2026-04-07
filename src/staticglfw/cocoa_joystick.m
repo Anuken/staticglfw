@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.4 Cocoa - www.glfw.org
+// GLFW 3.5 Cocoa - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2009-2019 Camilla Löwy <elmindreda@glfw.org>
 // Copyright (c) 2012 Torsten Walluhn <tw@mad-cad.net>
@@ -479,6 +479,11 @@ void _glfwUpdateGamepadGUIDCocoa(char* guid)
         sprintf(guid, "03000000%.4s0000%.4s000000000000",
                 original, original + 16);
     }
+}
+
+int _glfwPlatformSetJoystickRumble(_GLFWjoystick* js, float slowMotorIntensity, float fastMotorIntensity)
+{
+    return GLFW_FALSE;
 }
 
 #endif // _GLFW_COCOA

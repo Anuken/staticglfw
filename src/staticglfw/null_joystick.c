@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.4 - www.glfw.org
+// GLFW 3.5 - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2016-2017 Camilla Löwy <elmindreda@glfw.org>
 //
@@ -54,3 +54,7 @@ void _glfwUpdateGamepadGUIDNull(char* guid)
 {
 }
 
+int _glfwPlatformSetJoystickRumbleNull(_GLFWjoystick* js, float slowMotorIntensity, float fastMotorIntensity)
+{
+    return GLFW_FALSE;
+}

@@ -97,7 +97,7 @@ else:
 
 const
   VERSION_MAJOR* = 3
-  VERSION_MINOR* = 4
+  VERSION_MINOR* = 5
   VERSION_REVISION* = 0
 
   TRUE* = 1
@@ -470,6 +470,7 @@ proc getJoystickAxes*(joy: cint, count: ptr cint): ptr cfloat {.cdecl, importc: 
 proc getJoystickButtons*(joy: cint, count: ptr cint): ptr char {.cdecl, importc: "glfwGetJoystickButtons".}
 proc getJoystickName*(joy: cint): cstring {.cdecl, importc: "glfwGetJoystickName".}
 proc setJoystickCallback*(cbfun: JoystickFun): JoystickFun {.cdecl, importc: "glfwSetJoystickCallback".}
+proc setJoystickRumble*(joy: cint, slowMotorIntensity, fastMotorIntensity: cfloat): cint {.cdecl, importc: "glfwSetJoystickRumble".}
 # Gamepad functions
 proc joystickIsGamepad*(pad: cint): cint {.cdecl, importc: "glfwJoystickIsGamepad".}
 proc getGamepadName*(pad: cint): cstring {.cdecl, importc: "glfwGetGamepadName".}
