@@ -1,6 +1,9 @@
 when defined(emscripten):
   {.passL: "-s USE_WEBGL2=1 -s USE_GLFW=3".}
 else:
+  #needed for C17
+  {.passC: "-D_DEFAULT_SOURCE".}
+
   when defined(windows):
     when defined(gcc):
       {.passC: "-D_GLFW_WIN32", passL: "-lopengl32 -lgdi32 -limm32".}
@@ -78,7 +81,7 @@ else:
       compile: "staticglfw/posix_thread.c",
       compile: "staticglfw/osmesa_context.c"
     .}
-
+  
   # Common
   {.
     compile: "staticglfw/null_init.c",
